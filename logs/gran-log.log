@@ -1,0 +1,48 @@
+2023-07-14 22:01:47 [main] INFO  ru.gransoft.SpringApplicationStart - Starting SpringApplicationStart using Java 17.0.4.1 on DESKTOP-U673O62 with PID 12112 (C:\Java\granservice\target\classes started by Kirill in C:\Java\granservice)
+2023-07-14 22:01:47 [main] DEBUG ru.gransoft.SpringApplicationStart - Running with Spring Boot v2.6.7, Spring v5.3.19
+2023-07-14 22:01:47 [main] INFO  ru.gransoft.SpringApplicationStart - No active profile set, falling back to 1 default profile: "default"
+2023-07-14 22:01:48 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server; nested exception is org.springframework.boot.web.server.WebServerException: Could not load key store 'classpath:keystore.p12'
+2023-07-14 22:01:48 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.context.ApplicationContextException: Unable to start web server; nested exception is org.springframework.boot.web.server.WebServerException: Could not load key store 'classpath:keystore.p12'
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:163)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:577)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:740)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:415)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:303)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1312)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1301)
+	at ru.gransoft.SpringApplicationStart.main(SpringApplicationStart.java:13)
+Caused by: org.springframework.boot.web.server.WebServerException: Could not load key store 'classpath:keystore.p12'
+	at org.springframework.boot.web.embedded.tomcat.SslConnectorCustomizer.configureSslKeyStore(SslConnectorCustomizer.java:132)
+	at org.springframework.boot.web.embedded.tomcat.SslConnectorCustomizer.configureSsl(SslConnectorCustomizer.java:92)
+	at org.springframework.boot.web.embedded.tomcat.SslConnectorCustomizer.customize(SslConnectorCustomizer.java:57)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.customizeSsl(TomcatServletWebServerFactory.java:364)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.customizeConnector(TomcatServletWebServerFactory.java:342)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:203)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:182)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:160)
+	... 8 common frames omitted
+Caused by: java.io.FileNotFoundException: class path resource [keystore.p12] cannot be resolved to URL because it does not exist
+	at org.springframework.util.ResourceUtils.getURL(ResourceUtils.java:137)
+	at org.springframework.boot.web.embedded.tomcat.SslConnectorCustomizer.configureSslKeyStore(SslConnectorCustomizer.java:129)
+	... 15 common frames omitted
+2023-07-14 22:02:25 [main] INFO  ru.gransoft.SpringApplicationStart - Starting SpringApplicationStart using Java 17.0.4.1 on DESKTOP-U673O62 with PID 2688 (C:\Java\granservice\target\classes started by Kirill in C:\Java\granservice)
+2023-07-14 22:02:25 [main] DEBUG ru.gransoft.SpringApplicationStart - Running with Spring Boot v2.6.7, Spring v5.3.19
+2023-07-14 22:02:25 [main] INFO  ru.gransoft.SpringApplicationStart - No active profile set, falling back to 1 default profile: "default"
+2023-07-14 22:02:33 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2023-07-14 22:02:33 [main] WARN  c.n.eureka.cluster.PeerEurekaNodes - The replica size seems to be empty. Check the route 53 DNS Registry
+2023-07-14 22:02:34 [main] INFO  ru.gransoft.SpringApplicationStart - Started SpringApplicationStart in 10.822 seconds (JVM running for 12.284)
+2023-07-14 22:06:54 [main] INFO  ru.gransoft.SpringApplicationStart - Starting SpringApplicationStart using Java 17.0.4.1 on DESKTOP-U673O62 with PID 1680 (C:\Java\granservice\target\classes started by Kirill in C:\Java\granservice)
+2023-07-14 22:06:54 [main] DEBUG ru.gransoft.SpringApplicationStart - Running with Spring Boot v2.6.7, Spring v5.3.19
+2023-07-14 22:06:54 [main] INFO  ru.gransoft.SpringApplicationStart - No active profile set, falling back to 1 default profile: "default"
+2023-07-14 22:07:01 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2023-07-14 22:07:01 [main] WARN  c.n.eureka.cluster.PeerEurekaNodes - The replica size seems to be empty. Check the route 53 DNS Registry
+2023-07-14 22:07:03 [main] INFO  ru.gransoft.SpringApplicationStart - Started SpringApplicationStart in 10.737 seconds (JVM running for 12.256)
+2023-07-14 22:11:54 [main] INFO  ru.gransoft.SpringApplicationStart - Starting SpringApplicationStart using Java 17.0.4.1 on DESKTOP-U673O62 with PID 13420 (C:\Java\granservice\target\classes started by Kirill in C:\Java\granservice)
+2023-07-14 22:11:54 [main] DEBUG ru.gransoft.SpringApplicationStart - Running with Spring Boot v2.6.7, Spring v5.3.19
+2023-07-14 22:11:54 [main] INFO  ru.gransoft.SpringApplicationStart - No active profile set, falling back to 1 default profile: "default"
+2023-07-14 22:12:01 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2023-07-14 22:12:01 [main] WARN  c.n.eureka.cluster.PeerEurekaNodes - The replica size seems to be empty. Check the route 53 DNS Registry
+2023-07-14 22:12:03 [main] INFO  ru.gransoft.SpringApplicationStart - Started SpringApplicationStart in 10.705 seconds (JVM running for 12.659)
+2023-07-14 22:12:55 [http-nio-8090-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' not supported]
