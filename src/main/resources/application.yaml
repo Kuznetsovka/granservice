@@ -1,8 +1,6 @@
 #Порт, на котором будет запущен встроенный томкат
 server:
   port: 8090
-  application:
-    name: gran-docs
   ssl:
     enabled: false
     key-store: classpath:keystore.p12
@@ -10,19 +8,16 @@ server:
     key-store-type: PKCS12
     key-password: qwerty
     client-auth: need
-    trust-store:
-      classpath: truststore.p12
+    trust-store: classpath:truststore.p12
     trust-store-password: qwerty
     trust-store-type: PKCS12
-
+application:
+  name: gran-docs
 spring:
-  resources:
-  add-mappings: true
-
   #DB properties:
   #PostgreSQL
   datasource:
-    url: jdbc:postgresql://localhost:5432/gran-docs
+    url: jdbc:postgresql://localhost:5433/gran-docs
     username: postgres
     password: postgres
   jpa:
@@ -40,7 +35,8 @@ eureka:
     fetch-registry: false
 
 springdoc:
-  api-docs:path: /api-docs
+  api-docs:
+    path: /api-docs
 
 logging:
   level:
