@@ -35,8 +35,8 @@ public class MainController {
   }
 
   @GetMapping("/get-doc/{id}")
-  public String get(@PathVariable String id) {
-    String json = "Hierarchy json";
+  public String get(@PathVariable Long id) {
+    String json = docService.getHierarchyDocumentById(id);
     return json;
   }
 

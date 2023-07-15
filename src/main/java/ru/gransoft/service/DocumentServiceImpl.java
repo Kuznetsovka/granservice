@@ -9,11 +9,10 @@ import ru.gransoft.dto.DocumentDto;
 import ru.gransoft.entity.Document;
 import ru.gransoft.repository.DocumentRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author Kuznetsovka 14.07.2023
@@ -25,11 +24,17 @@ public class DocumentServiceImpl implements DocumentService {
     @Autowired
     private DocumentRepository repository;
 
-    @PersistenceContext
-    protected EntityManager entityManager;
+    @Autowired
+    private ParseService parseService;
 
-    /** {@inheritDoc} */
-    @Transactional(transactionManager="transactionManager", propagation = Propagation.REQUIRED)
+    //Если бы запросы были бы сложнее выбрал бы способ написания через entityManager.
+//    @PersistenceContext
+//    protected EntityManager entityManager;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(transactionManager = "transactionManager", propagation = Propagation.REQUIRED)
     @Override
     public DocumentDto addDocument(DocumentDto dto) {
         Document parent = getParent(dto.getParentId());
@@ -37,11 +42,7 @@ public class DocumentServiceImpl implements DocumentService {
                 .max(Comparator.comparing(Document::getSeq))
                 .map(Document::getSeq)
                 .orElse(0) : 0;
-        Document document = Document.builder()
-                .text(dto.getText())
-                .seq(++seq)
-                .parent(parent)
-                .build();
+        Document document = parseService.mapEntityFromDto(dto, parent, seq);
         Document savedDocument = repository.save(document);
         Long parentId = savedDocument.getParent() != null ? savedDocument.getParent().getId() : null;
         DocumentDto savedDto = DocumentDto.builder()
@@ -53,11 +54,12 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     /** {@inheritDoc} */
-    @Transactional(transactionManager="transactionManager", propagation = Propagation.REQUIRED)
+    @Transactional(transactionManager = "transactionManager", propagation = Propagation.REQUIRED)
     @Override
-    public String getDocumentByNaturalOrder(Long parentId) {
-        //getDocumentRecursive(parentId, entityManager);
-        return null;
+    public String getHierarchyDocumentById(Long id) {
+        DocumentDto dto = getRootDocument(id);
+        String json = parseService.parseToJson(dto);
+        return json;
     }
 
     private Document getParent(Long parentId) {
@@ -79,14 +81,44 @@ public class DocumentServiceImpl implements DocumentService {
 
     }
 
-    private void getDocumentRecursive(Long parent_id, EntityManager em){
-        List<Document> nodes = em.createQuery("select d from Document d"
-                        + " where d.parent.id = :pId"
-                        + " order by d.id", Document.class)
-                .setParameter("pId", parent_id)
-                .getResultList();
-        for (Document node:nodes) {
-            getDocumentRecursive(node.getId(), em);
+    private DocumentDto getRootDocument(Long id) {
+//        Document root = em.createQuery("select d from Document d"
+//                        + " where d.id = :id", Document.class)
+//                .setParameter("id", id)
+//                .getResultStream()
+//                .findAny()
+//                .orElse(null);
+        Optional<Document> root = repository.findById(id);
+        if (root.isEmpty()) {
+            String msg = String.format("Документа id=%d не существует!", id);
+            log.error(msg);
+            throw new IllegalArgumentException(msg);
+        }
+        DocumentDto dto = parseService.mapDtoFromEntity(root.get());
+        getDocumentRecursive(id, dto);
+        return dto;
+    }
+
+
+    /**
+     * Выбрал способ запросов детей в новой транзакции.
+     */
+    @Transactional(transactionManager = "transactionManager", propagation = Propagation.REQUIRES_NEW)
+    void getDocumentRecursive(Long parentId, DocumentDto dto) {
+//        List<Document> docs = em.createQuery("select d from Document d"
+//                        + " where d.parent.id = :parentId"
+//                        + " order by d.seq", Document.class)
+//                .setParameter("parentId", parentId)
+//                .getResultList();
+        List<Document> docs = repository.findAllByParent_IdOrderBySeq(parentId);
+        List<DocumentDto> children = docs.stream()
+                .map(e -> parseService.mapDtoFromEntity(e))
+                .collect(Collectors.toList());
+        children = children.isEmpty() ? null : children;
+        dto.setChildren(children);
+        if (children == null) return;
+        for (DocumentDto doc : dto.getChildren()) {
+            getDocumentRecursive(doc.getId(), doc);
         }
     }
 }
