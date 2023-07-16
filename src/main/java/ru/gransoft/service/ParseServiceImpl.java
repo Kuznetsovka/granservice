@@ -1,8 +1,10 @@
 package ru.gransoft.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
 import ru.gransoft.JsonHelper;
 import ru.gransoft.dto.DocumentDto;
+import ru.gransoft.entity.Document;
 
 /**
  * @author Kuznetsovka 14.07.2023
@@ -18,7 +20,32 @@ public class ParseServiceImpl implements ParseService {
 
     @Override
     public String parseToJson(DocumentDto document) {
-        String res = JsonHelper.toJsonStr(document);
+        String res = JsonHelper.toJsonPrettyStr(document,true);
         return res;
+    }
+
+    @Override
+    public JsonNode getJsonNodeFromDocument(Document doc, JsonNode node) {
+        DocumentDto dto = mapDtoFromEntity(doc);
+        node = JsonHelper.objectToJsonNode(dto);
+        return node;
+    }
+
+    @Override
+    public Document mapEntityFromDto(DocumentDto dto, Document parent, int seq) {
+        return Document.builder()
+                    .text(dto.getText())
+                    .seq(++seq)
+                    .parent(parent)
+                    .build();
+    }
+
+    @Override
+    public DocumentDto mapDtoFromEntity(Document entity) {
+        return DocumentDto.builder()
+                .id(entity.getId())
+                .text(entity.getText())
+                .seq(entity.getSeq())
+                .build();
     }
 }
