@@ -1,15 +1,14 @@
 package ru.gransoft;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
-import ru.gransoft.dto.DocumentDto;
-
-import java.io.IOException;
 
 /**
  * @author Kuznetsovka 14.07.2023
@@ -61,38 +60,6 @@ public class JsonHelper {
     }
   }
 
-  /**
-   * Парсинг объекта в JsonNode
-   * @param obj объект
-   * @return JSON node.
-   */
-  public static JsonNode objectToJsonNode(Object obj) {
-    return objectToJsonNode(obj, mapper);
-  }
-
-  public static JsonNode objectToJsonNode(final Object data, ObjectMapper mapper) {
-    try {
-      return mapper.valueToTree(data);
-    } catch(Exception e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  private static String generateJson(Object o, boolean prettyPrint, boolean escapeNonASCII, ObjectMapper mapper) {
-    try {
-      ObjectWriter writer = mapper.writer();
-      if (prettyPrint) {
-        writer = writer.with(SerializationFeature.INDENT_OUTPUT);
-      }
-      if (escapeNonASCII) {
-        writer = writer.with(JsonGenerator.Feature.ESCAPE_NON_ASCII);
-      }
-      return writer.writeValueAsString(o);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
   public static String toJsonStr(Object obj){
     try {
       mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -104,10 +71,4 @@ public class JsonHelper {
 
     return null;
   }
-
-  public static String toJsonPrettyStr(DocumentDto dto, boolean prettyPrint) {
-    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    return generateJson(dto, prettyPrint, false, mapper);
-  }
-
 }
