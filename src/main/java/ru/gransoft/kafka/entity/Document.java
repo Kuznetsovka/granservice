@@ -1,4 +1,4 @@
-package ru.gransoft.entity;
+package ru.gransoft.kafka.entity;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;

@@ -1,10 +1,11 @@
-package ru.gransoft.service;
+package ru.gransoft.kafka.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
-import ru.gransoft.JsonHelper;
-import ru.gransoft.dto.DocumentDto;
-import ru.gransoft.entity.Document;
+import ru.gransoft.kafka.JsonHelper;
+import ru.gransoft.kafka.dto.DocumentDto;
+import ru.gransoft.kafka.entity.Document;
+
 
 /**
  * @author Kuznetsovka 14.07.2023

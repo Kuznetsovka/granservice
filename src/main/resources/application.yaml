@@ -34,29 +34,37 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+
   kafka:
+    # Адреса всех брокеров кластера
+    bootstrap-servers: host.docker.internal:29092,host.docker.internal:29093
+    listener:
+      # Получение каждой записи должно быть подтверждено
+      ack-mode: record
     producer:
       client-id: ${spring.application.name}
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
       retries: 3
     consumer:
-      client-id: ${spring.application.name}
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      enable-auto-commit: false
-      auto-offset-reset: earliest
-      properties:
-        spring:
-          json:
-            trusted:
-              packages: ru.gransoft
+      group-id: ${spring.application.name}
+      autoOffsetReset: earliest
+
+#    ssl:
+#      protocol: SSL
+#      trust-store-location: file:/truststore.p12
+#      trust-store-password: qwerty
+#      key-store-location: file:/keystore.p12
+#      key-store-password: qwerty
+#      key-password: qwerty
+
+
 kafka:
-  topics:
-    test-topic: topic1
-  reuest:
-    topic: document
-  reply:
-    topic: document
-  group.id: document-group
+  get:
+    topic: get
+  post:
+    topic: post
+  group:
+    id: document-group
 
   #определяет, регистрируется ли сервис как клиент на Eureka Server.
 eureka:
@@ -78,26 +86,3 @@ hibernate:
   show_sql: true
   hbm2ddl:
     auto: update
-
-    #  kafka:
-    #    # Адреса всех брокеров кластера
-    #    bootstrap-servers: host.docker.internal:29092,host.docker.internal:29093
-    #    listener:
-    #      # Получение каждой записи должно быть подтверждено
-    #      ack-mode: record
-    #    producer:
-    #      client-id: ${spring.application.name}
-    #      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-    #      retries: 3
-    #    consumer:
-    #      group-id: ${spring.application.name}
-    #      autoOffsetReset: earliest
-    #      # Сериализаторы для всех типов
-    #      keyDeserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-    #      valueDeserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-    #    properties:
-    #      # Тип, для которого определяем конкретные сериализаторы
-    #      spring.json.value.default.type: ru.gransoft.dto.DocumentDto
-    #      spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.JsonDeserializer
-    #      spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
-    #      json.trusted.packages: ru.gransoft

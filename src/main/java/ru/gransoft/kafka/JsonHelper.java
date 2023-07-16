@@ -1,4 +1,4 @@
-package ru.gransoft;
+package ru.gransoft.kafka;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
-import ru.gransoft.dto.DocumentDto;
+import ru.gransoft.kafka.dto.DocumentDto;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package ru.gransoft;
+package ru.gransoft.kafka;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.boot.SpringApplication;

@@ -1,6 +1,6 @@
-package ru.gransoft.service;
+package ru.gransoft.kafka.service;
 
-import ru.gransoft.dto.DocumentDto;
+import ru.gransoft.kafka.dto.DocumentDto;
 
 /**
  * @author Kuznetsovka 14.07.2023

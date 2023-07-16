@@ -1,15 +1,19 @@
-package ru.gransoft.service;
+package ru.gransoft.kafka.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.gransoft.dto.DocumentDto;
-import ru.gransoft.entity.Document;
-import ru.gransoft.repository.DocumentRepository;
+import ru.gransoft.kafka.dto.DocumentDto;
+import ru.gransoft.kafka.entity.Document;
+import ru.gransoft.kafka.dto.DocumentDto;
+import ru.gransoft.kafka.entity.Document;
+import ru.gransoft.kafka.repository.DocumentRepository;
+import ru.gransoft.kafka.repository.DocumentRepository;
 
 import java.util.Comparator;
 import java.util.List;
@@ -38,8 +42,6 @@ public class DocumentServiceImpl implements DocumentService {
      */
     @Transactional(transactionManager = "transactionManager", propagation = Propagation.REQUIRED)
     @Override
-    @KafkaListener(topics = "${kafka.reuest.topic}", groupId = "${kafka.group.id}")
-    @SendTo
     public DocumentDto addDocument(DocumentDto dto) {
         Document parent = getParent(dto.getParentId());
         int seq = parent != null ? parent.getChildren().stream()

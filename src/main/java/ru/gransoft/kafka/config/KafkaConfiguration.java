@@ -1,4 +1,4 @@
-//package ru.gransoft.config;
+//package ru.gransoft.kafka.config;
 //
 //import lombok.RequiredArgsConstructor;
 //import org.apache.kafka.common.TopicPartition;

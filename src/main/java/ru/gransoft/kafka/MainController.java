@@ -1,4 +1,4 @@
-package ru.gransoft;
+package ru.gransoft.kafka;
 
 
 import com.sun.jersey.api.NotFoundException;
@@ -11,13 +11,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.requestreply.RequestReplyFuture;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import ru.gransoft.dto.DocumentDto;
-import ru.gransoft.service.DocumentService;
-import ru.gransoft.service.ParseService;
+import ru.gransoft.kafka.dto.DocumentDto;
+import ru.gransoft.kafka.service.DocumentService;
 
 import java.util.concurrent.ExecutionException;
 
@@ -32,24 +33,18 @@ public class MainController {
   @Autowired
   private DocumentService docService;
 
-  @Value("${kafka.reuest.topic}")
-  private String requestTopic;
-
-  @Autowired
-  private ReplyingKafkaTemplate<String, DocumentDto, DocumentDto> replyingKafkaTemplate;
-
-  @PostMapping("/add-doc")
-  public ResponseEntity<DocumentDto> addDocument(@RequestBody DocumentDto doc)
-          throws InterruptedException, ExecutionException {
-    ProducerRecord<String, DocumentDto> record = new ProducerRecord<>
-            (requestTopic, null, String.valueOf(doc.getClass().hashCode()), doc);
-    RequestReplyFuture<String, DocumentDto, DocumentDto> future = replyingKafkaTemplate.sendAndReceive(record);
-    ConsumerRecord<String, DocumentDto> response = future.get();
-    return new ResponseEntity<>(response.value(), HttpStatus.OK);
+  @PostMapping(value = "/add-doc", produces = {MediaType.APPLICATION_JSON_VALUE})
+  @KafkaListener(topics = "${kafka.post.topic}", groupId = "${kafka.group.id}", containerFactory = "kafkaListenerContainerFactory")
+  @SendTo
+  public ResponseEntity<DocumentDto> addDocument(@RequestBody DocumentDto doc) {
+    DocumentDto savedDoc = docService.addDocument(doc);
+    return new ResponseEntity<>(savedDoc, HttpStatus.OK);
   }
 
   @GetMapping(value = "/get-doc/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
-  public ResponseEntity<DocumentDto> get(@PathVariable Long id) {
+  @KafkaListener(topics = "${kafka.get.topic}", groupId = "${kafka.group.id}", containerFactory = "kafkaListenerContainerFactory")
+  @SendTo
+  public ResponseEntity<DocumentDto> getHierarchy(@PathVariable Long id) {
     DocumentDto dto = docService.getHierarchyDocumentById(id);
     return new ResponseEntity<>(dto, HttpStatus.OK);
   }

@@ -1,8 +1,9 @@
-package ru.gransoft.service;
+package ru.gransoft.kafka.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import ru.gransoft.dto.DocumentDto;
-import ru.gransoft.entity.Document;
+import ru.gransoft.kafka.dto.DocumentDto;
+import ru.gransoft.kafka.entity.Document;
+
 
 /**
  * @author Kuznetsovka 14.07.2023

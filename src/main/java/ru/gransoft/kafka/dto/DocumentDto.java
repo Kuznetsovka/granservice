@@ -1,4 +1,4 @@
-package ru.gransoft.dto;
+package ru.gransoft.kafka.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,8 +1,8 @@
-package ru.gransoft.repository;
+package ru.gransoft.kafka.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.gransoft.entity.Document;
+import ru.gransoft.kafka.entity.Document;
 
 import java.util.List;
 import java.util.Optional;
