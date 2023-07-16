@@ -2,6 +2,8 @@ package ru.gransoft.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +38,8 @@ public class DocumentServiceImpl implements DocumentService {
      */
     @Transactional(transactionManager = "transactionManager", propagation = Propagation.REQUIRED)
     @Override
+    @KafkaListener(topics = "${kafka.reuest.topic}", groupId = "${kafka.group.id}")
+    @SendTo
     public DocumentDto addDocument(DocumentDto dto) {
         Document parent = getParent(dto.getParentId());
         int seq = parent != null ? parent.getChildren().stream()
@@ -56,10 +60,9 @@ public class DocumentServiceImpl implements DocumentService {
     /** {@inheritDoc} */
     @Transactional(transactionManager = "transactionManager", propagation = Propagation.REQUIRED)
     @Override
-    public String getHierarchyDocumentById(Long id) {
+    public DocumentDto getHierarchyDocumentById(Long id) {
         DocumentDto dto = getRootDocument(id);
-        String json = parseService.parseToJson(dto);
-        return json;
+        return dto;
     }
 
     private Document getParent(Long parentId) {

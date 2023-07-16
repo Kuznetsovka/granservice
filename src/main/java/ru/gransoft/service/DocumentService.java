@@ -19,5 +19,5 @@ public interface DocumentService {
      * @param parentId - ID родителя документа от которого запрашивается дерево документов
      * @return json дерева документов
      */
-    String getHierarchyDocumentById(Long parentId);
+    DocumentDto getHierarchyDocumentById(Long parentId);
 }
