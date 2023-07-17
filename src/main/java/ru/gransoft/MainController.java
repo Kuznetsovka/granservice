@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import ru.gransoft.dto.DocumentDto;
 import ru.gransoft.service.DocumentService;
-import ru.gransoft.service.ParseService;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author Kuznetsovka 14.07.2023
@@ -42,7 +42,7 @@ public class MainController {
   public ResponseEntity<DocumentDto> addDocument(@RequestBody DocumentDto doc)
           throws InterruptedException, ExecutionException {
     ProducerRecord<String, DocumentDto> record = new ProducerRecord<>
-            (requestTopic, null, String.valueOf(doc.getClass().hashCode()), doc);
+            (requestTopic, null, String.valueOf(ThreadLocalRandom.current().nextLong()), doc);
     RequestReplyFuture<String, DocumentDto, DocumentDto> future = replyingKafkaTemplate.sendAndReceive(record);
     ConsumerRecord<String, DocumentDto> response = future.get();
     return new ResponseEntity<>(response.value(), HttpStatus.OK);
